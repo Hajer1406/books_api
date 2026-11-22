@@ -11,6 +11,8 @@ required=(
   pom.xml
   Dockerfile
   compose.yaml
+  compose.staging.yaml
+  scripts/wait-healthy.sh
   .github/workflows/ci.yml
 )
 
@@ -57,6 +59,14 @@ if grep -q "condition: service_healthy" compose.yaml && grep -q "mysqldata:" com
   echo "  [OK] compose.yaml conditionne le démarrage à la santé et déclare un volume persistant"
 else
   echo "  [ERREUR] compose.yaml doit contenir un healthcheck conditionnel et un volume persistant" >&2
+  errors=$((errors + 1))
+fi
+
+echo "[INFO] Vérification de la conformité de compose.staging.yaml..."
+if grep -q "image: ghcr.io" compose.staging.yaml && ! grep -q "build:" compose.staging.yaml; then
+  echo "  [OK] compose.staging.yaml consomme une image de registre publiée et ne reconstruit jamais l'image"
+else
+  echo "  [ERREUR] compose.staging.yaml doit référencer ghcr.io et ne pas contenir d'instruction build" >&2
   errors=$((errors + 1))
 fi
 
