@@ -13,6 +13,8 @@ required=(
   compose.yaml
   compose.staging.yaml
   scripts/wait-healthy.sh
+  docs/fiche-recap.md
+  docs/incident-report.md
   .github/workflows/ci.yml
 )
 

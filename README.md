@@ -18,9 +18,11 @@ API REST de gestion d'un catalogue de livres et d'auteurs, construite avec **Spr
 
 Books API fournit des points d'accès REST pour créer, lire, modifier et supprimer des livres, ainsi que filtrer par auteur. Elle intègre également un endpoint dédié de contrôle de santé `/health`.
 
-## Architecture
+## Architecture et Documentation
 
-Le détail complet de l'architecture est documenté dans [docs/architecture.md](docs/architecture.md).
+- [Détail de l'architecture logicielle et réseau](docs/architecture.md)
+- [Fiche Récapitulative du Projet](docs/fiche-recap.md)
+- [Rapport d'incident et démonstration de Rollback](docs/incident-report.md)
 
 ## Prérequis
 
@@ -85,6 +87,23 @@ L'environnement de staging réutilise l'image immuable publiée sur GitHub Conta
    ./scripts/wait-healthy.sh
    ```
    *(Le script vérifie l'endpoint `/health` avec 12 tentatives de 5 secondes, affiche `staging sain` et renvoie le code 0 en succès, ou `staging non sain` et le code 1 en cas de timeout).*
+
+### Procédure de Retour Arrière (Rollback)
+
+Si une version déployée est défectueuse (ex: `IMAGE_TAG=v0.9.0`) et fait échouer `wait-healthy.sh` :
+1. Consulter les logs pour identifier la cause :
+   ```bash
+   docker compose -f compose.staging.yaml logs --tail=50 api
+   ```
+2. Revenir immédiatement à la dernière version saine :
+   ```bash
+   printf 'IMAGE_TAG=v1.0.0\n' > .env.deploy
+   docker compose --env-file .env.deploy -f compose.staging.yaml up -d
+   ```
+3. Confirmer la restauration :
+   ```bash
+   ./scripts/wait-healthy.sh
+   ```
 
 ## Démarrage en local (sans Docker)
 
