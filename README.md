@@ -61,6 +61,31 @@ Pour arrêter la pile et purger le volume persistant :
 docker compose down -v
 ```
 
+## Déploiement en environnement de recette (Staging)
+
+L'environnement de staging réutilise l'image immuable publiée sur GitHub Container Registry (`ghcr.io/hajer1406/books_api:${IMAGE_TAG}`) sans **jamais la reconstruire** :
+
+1. **Définir la version à déployer** :
+   ```bash
+   printf 'IMAGE_TAG=v1.0.0\n' > .env.deploy
+   ```
+
+2. **Télécharger l'image depuis le registre** :
+   ```bash
+   docker compose --env-file .env.deploy -f compose.staging.yaml pull
+   ```
+
+3. **Mettre en service la pile Staging** :
+   ```bash
+   docker compose --env-file .env.deploy -f compose.staging.yaml up -d
+   ```
+
+4. **Contrôler automatiquement la santé du service** :
+   ```bash
+   ./scripts/wait-healthy.sh
+   ```
+   *(Le script vérifie l'endpoint `/health` avec 12 tentatives de 5 secondes, affiche `staging sain` et renvoie le code 0 en succès, ou `staging non sain` et le code 1 en cas de timeout).*
+
 ## Démarrage en local (sans Docker)
 
 1. **Cloner le dépôt** :

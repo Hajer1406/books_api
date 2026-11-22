@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: dev-password
+      MYSQL_DATABASE: livres_db
+      MYSQL_USER: campus
+      MYSQL_PASSWORD: dev-password
+    volumes:
+      - mysqldata_staging:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -pdev-password || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  api:
+    image: ghcr.io/hajer1406/books_api:${IMAGE_TAG:-v1.0.0}
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: livres_db
+      DB_USER: root
+      DB_PASSWORD: dev-password
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysqldata_staging:
