@@ -11,6 +11,7 @@ required=(
   pom.xml
   Dockerfile
   compose.yaml
+  .github/workflows/ci.yml
 )
 
 echo "=========================================="
