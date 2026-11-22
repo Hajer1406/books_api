@@ -28,7 +28,39 @@ Le détail complet de l'architecture est documenté dans [docs/architecture.md](
 - **MySQL 8+** (ou conteneurisé via Docker)
 - **Git 2.40+**
 
-## Démarrage rapide en local
+## Démarrage en une seule commande (Docker Compose)
+
+Pour démarrer toute la pile applicative (l'API Spring Boot et la base de données MySQL) en une seule commande :
+
+```bash
+docker compose up -d --build
+```
+
+Compose va orchestrer :
+1. Le démarrage de la base de données MySQL `db` et de son volume persistant `mysqldata`.
+2. L'attente de l'état `healthy` de la base via son healthcheck.
+3. Le build et le démarrage automatique de l'API `api` connectée à MySQL.
+
+Pour vérifier que le service est opérationnel :
+```bash
+curl http://localhost:8080/health
+```
+Réponse attendue :
+```json
+{"service":"books_api","status":"ok"}
+```
+
+Pour arrêter la pile :
+```bash
+docker compose down
+```
+
+Pour arrêter la pile et purger le volume persistant :
+```bash
+docker compose down -v
+```
+
+## Démarrage en local (sans Docker)
 
 1. **Cloner le dépôt** :
    ```bash
