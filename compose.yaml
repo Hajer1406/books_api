@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: dev-password
+      MYSQL_DATABASE: livres_db
+      MYSQL_USER: campus
+      MYSQL_PASSWORD: dev-password
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -pdev-password || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+    # ATTENTION : Le port 3306 n'est pas publié sur l'hôte pour garantir la sécurité.
+    # Seul le conteneur 'api' peut joindre la base via le réseau privé de Compose.
+
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: livres_db
+      DB_USER: root
+      DB_PASSWORD: dev-password
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysqldata:
