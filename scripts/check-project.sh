@@ -5,9 +5,11 @@ errors=0
 required=(
   README.md
   .gitignore
+  .dockerignore
   .env.example
   docs/architecture.md
   pom.xml
+  Dockerfile
 )
 
 echo "=========================================="
@@ -37,6 +39,14 @@ if grep -q "livres_db" .env.example; then
   echo "  [OK] .env.example contient bien la base de données livres_db"
 else
   echo "  [ERREUR] .env.example ne référence pas la base attendue livres_db" >&2
+  errors=$((errors + 1))
+fi
+
+echo "[INFO] Vérification de la conformité du Dockerfile..."
+if grep -q "USER " Dockerfile && grep -q "HEALTHCHECK" Dockerfile; then
+  echo "  [OK] Dockerfile contient un utilisateur non-root et un HEALTHCHECK"
+else
+  echo "  [ERREUR] Dockerfile doit contenir USER et HEALTHCHECK" >&2
   errors=$((errors + 1))
 fi
 
