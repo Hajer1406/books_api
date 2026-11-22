@@ -162,6 +162,10 @@ Le projet intègre un pipeline d'intégration continue GitHub Actions (`.github/
   - **Lien de l'exécution :** [https://github.com/Hajer1406/books_api/actions/runs/45044047815](https://github.com/Hajer1406/books_api/actions/runs/45044047815)
   - **Statut :** Tous les tests unitaires et d'intégration validés sur Java 17 et Java 21, artefacts générés et téléchargés, image Docker construite avec succès.
 
+- **Pipeline de Release & Déploiement Staging Automatique sur Tag (Bonus +2 pts) :**
+  - **Lien de l'exécution :** [https://github.com/Hajer1406/books_api/actions/runs/45081258773](https://github.com/Hajer1406/books_api/actions/runs/45081258773)
+  - **Statut :** Déclenché automatiquement par le tag Git `v1.0.2`. Orchestre les tests multi-versions, la publication de l'image sur GHCR, la mise en service automatique de la pile Staging et le contrôle de santé `wait-healthy.sh` validé avec succès.
+
 - **Exécution en Échec (Démonstration d'erreur bloquante) :**
   - **Lien de l'exécution :** [https://github.com/Hajer1406/books_api/actions/runs/45042166838](https://github.com/Hajer1406/books_api/actions/runs/45042166838)
   - **Premier message d'erreur utile :** `IllegalStateException: Failed to load ApplicationContext` dans la suite de tests de contrôleur, provoquant `exit code 1` dans Maven.

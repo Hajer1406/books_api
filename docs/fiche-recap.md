@@ -92,4 +92,5 @@ En cas de mise en service d'une version défectueuse, la procédure de rollback 
 - **Pipeline en Échec (Erreur unitaire utile bloquant le job de build Docker) :**  
   [https://github.com/Hajer1406/books_api/actions/runs/45042166838](https://github.com/Hajer1406/books_api/actions/runs/45042166838)
 - **Pipeline de Publication et Déploiement Staging sur Tag v* (Bonus +2 pts) :**  
-  Publication sur GHCR suivie du déploiement automatisé en staging et validation par `scripts/wait-healthy.sh`.
+  [https://github.com/Hajer1406/books_api/actions/runs/45081258773](https://github.com/Hajer1406/books_api/actions/runs/45081258773)  
+  Publication sur GHCR suivie du déploiement automatisé en staging et validation par `scripts/wait-healthy.sh` (code 0).
