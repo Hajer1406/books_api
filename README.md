@@ -9,6 +9,7 @@ API REST de gestion d'un catalogue de livres et d'auteurs, construite avec **Spr
 - [Prérequis](#prérequis)
 - [Démarrage rapide en local](#démarrage-rapide-en-local)
 - [Points d'accès de l'API](#points-daccès-de-lapi)
+- [Pipeline CI/CD](#pipeline-cicd)
 - [Conventions DevOps et Git](#conventions-devops-et-git)
 
 ---
@@ -101,6 +102,25 @@ docker compose down -v
 - `POST /api` : Ajout d'un livre (corps JSON).
 - `PUT /api` : Mise à jour d'un livre.
 - `DELETE /api/{id}` : Suppression d'un livre.
+
+## Pipeline CI/CD
+
+Le projet intègre un pipeline d'intégration continue GitHub Actions (`.github/workflows/ci.yml`) déclenché à chaque Pull Request vers la branche `main` ainsi que sur les tags de release (`v*`). Il orchestre :
+1. **Contrôle de conformité** automatique via le script `scripts/check-project.sh`.
+2. **Matrice de tests** multi-versions Java (`Java 17` et `Java 21`).
+3. **Publication d'artefacts** : rapports de tests Surefire XML téléchargeables.
+4. **Construction de l'image Docker** (`docker-build`) strictement conditionnée par la réussite des tests (`needs: test`).
+
+### Preuves d'exécution du pipeline (Livrables demandés)
+
+- **Exécution Réussie (Succès) :**
+  - **Lien de l'exécution :** [https://github.com/Hajer1406/books_api/actions/runs/45044047815](https://github.com/Hajer1406/books_api/actions/runs/45044047815)
+  - **Statut :** Tous les tests unitaires et d'intégration validés sur Java 17 et Java 21, artefacts générés et téléchargés, image Docker construite avec succès.
+
+- **Exécution en Échec (Démonstration d'erreur bloquante) :**
+  - **Lien de l'exécution :** [https://github.com/Hajer1406/books_api/actions/runs/45042166838](https://github.com/Hajer1406/books_api/actions/runs/45042166838)
+  - **Premier message d'erreur utile :** `IllegalStateException: Failed to load ApplicationContext` dans la suite de tests de contrôleur, provoquant `exit code 1` dans Maven.
+  - **Comportement DevOps validé :** Grâce à la clause `needs: test`, le job `docker-build` a été immédiatement bloqué (`skipped`). La Pull Request a été marquée en rouge, empêchant tout déploiement ou fusion de code défaillant sur `main`.
 
 ## Conventions DevOps et Git
 
