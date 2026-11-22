@@ -34,13 +34,11 @@ jobs:
 
       - name: Exécuter le script de contrôle de conformité du projet
         run: |
-          chmod +x scripts/check-project.sh
-          ./scripts/check-project.sh
+          sed -i 's/\r$//' scripts/check-project.sh
+          bash scripts/check-project.sh
 
       - name: Exécuter la suite de tests unitaires et d'intégration
-        run: |
-          chmod +x mvnw
-          ./mvnw test
+        run: mvn test
 
       - name: Sauvegarder les rapports de tests Surefire en artefact
         uses: actions/upload-artifact@v4

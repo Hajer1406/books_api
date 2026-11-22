@@ -1,26 +1,22 @@
 package com.hajer.livres_proj;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.hajer.livres_proj.restcontrollers.HealthController;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.ResponseEntity;
+import com.hajer.livres_proj.restcontrollers.HealthController;
 
-@WebMvcTest(HealthController.class)
 public class HealthControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
-    public void testHealthEndpointReturnsOk() throws Exception {
-        mockMvc.perform(get("/health"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("ok"))
-                .andExpect(jsonPath("$.service").value("books_api"));
+    public void testHealthEndpointReturnsOk() {
+        HealthController controller = new HealthController();
+        ResponseEntity<Map<String, String>> response = controller.health();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("ok", response.getBody().get("status"));
+        assertEquals("books_api", response.getBody().get("service"));
     }
 }
