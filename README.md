@@ -154,6 +154,7 @@ Le projet intègre un pipeline d'intégration continue GitHub Actions (`.github/
 2. **Matrice de tests** multi-versions Java (`Java 17` et `Java 21`).
 3. **Publication d'artefacts** : rapports de tests Surefire XML téléchargeables.
 4. **Construction de l'image Docker** (`docker-build`) strictement conditionnée par la réussite des tests (`needs: test`).
+5. **Déploiement automatique en Staging et contrôle de santé** (`deploy-staging`) déclenché sur les tags `v*` (Bonus +2 pts).
 
 ### Preuves d'exécution du pipeline (Livrables demandés)
 
