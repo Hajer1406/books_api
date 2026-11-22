@@ -1,0 +1,12 @@
+**/.git
+**/.gitignore
+**/.env*
+!**/.env.example
+target/
+*.log
+logs/
+.vscode/
+.idea/
+docs/
+scripts/
+README.md
