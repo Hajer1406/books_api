@@ -12,8 +12,8 @@ services:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -pdev-password || exit 1"]
       interval: 5s
       timeout: 3s
-      retries: 10
-      start_period: 15s
+      retries: 20
+      start_period: 30s
 
   api:
     image: ghcr.io/hajer1406/books_api:${IMAGE_TAG:-v1.0.0}
