@@ -1,7 +1,6 @@
-# Fiche Récapitulative — Projet DevOps L3 DSI
+# Fiche Récapitulative 
 
-**Projet :** Books API (Catalogue de livres et d'auteurs)  
-**Étudiant :** Bahri Hajer  
+**Projet :** Books API (Catalogue de livres et d'auteurs)   
 **Dépôt GitHub :** [https://github.com/Hajer1406/books_api](https://github.com/Hajer1406/books_api)  
 **Registre de conteneurs (GHCR) :** `ghcr.io/hajer1406/books_api`  
 
